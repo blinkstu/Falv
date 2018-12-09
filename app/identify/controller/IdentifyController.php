@@ -125,7 +125,7 @@ class IdentifyController extends UserBaseController
         switch ($order['status']) {
             case 1:
                 $statusInfo = [
-                    'color'=> '#4183c4',
+                    'color'=> '#4183c4', 
                     'step'=> 2
                 ];
                 break;
