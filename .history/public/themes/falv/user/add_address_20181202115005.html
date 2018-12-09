@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>添加地址</title>
+    <meta name="keywords" content="{$site_info.site_seo_keywords|default=''}" />
+    <meta name="description" content="{$site_info.site_seo_description|default=''}">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/city-picker.css">
+    <include file="public@head" />
+    <link href="__TMPL__/public/assets/css/slippry/slippry.css" rel="stylesheet">
+    <hook name="before_head_end" />
+    <style>
+    .city-picker-selector{
+        width: 100%;
+    }
+    .city-picker-selector .selector-item {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 200px;
+    height: 36px;
+    line-height: 36px;
+    float: left;
+    margin-left: 20px;
+    position: relative;
+}
+    </style>
+</head>
+
+<body style="background:#fff;">
+    <div class="container-fluid">
+        <div class="layui-form" lay-filter="layuiadmin-app-form-list" id="layuiadmin-app-form-list">
+            <div class="p-4">
+                <div class="city-picker-selector" id="city-picker-selector"></div>
+                <input style="margin-left:20px;width:80%;margin-top:10px;" type="text" class="form-control" placeholder="详细门牌号" id="" name="detail" >
+            </div>
+            <div class="layui-form-item hidden" >
+                <input type="button" lay-submit="" lay-filter="layuiadmin-app-form-submit" id="layuiadmin-app-form-submit" value="确认添加">
+                <input type="button" lay-submit="" lay-filter="layuiadmin-app-form-edit" id="layuiadmin-app-form-edit" value="确认编辑">
+            </div>
+        </div>
+    </div>
+    <!-- /container -->
+    <script src="__STATIC__/js/jquery-ui.min.js"></script>
+    <include file="public@scripts" />
+    <script src="__STATIC__/js/custom.js"></script>
+    <script src="__TMPL__/public/assets/layui/layui.js"></script>
+    <script>
+    layui.config({
+        base: '__TMPL__/public/assets/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'form', 'layer'], function () {
+            var selector1 = $('#city-picker-selector').cityPicker({
+                dataJson: cityData,
+                renderMode: true,
+                search: false,
+                autoSelected: false,
+                code: 'cityCode',
+                level: 4,
+                onChoiceEnd: function () {
+                    console.log(this.values)
+                }
+            });
+            layui.form.on('submit(layuiadmin-app-form-submit)', function (data) {
+                var field = data.field; //获取提交的字段
+                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                $.ajax({
+                    url: "/user/profile/addAddress",
+                    type: "post",
+                    data: field,
+                    success: function (data) {
+                        if (data.code == 1) {
+                            parent.good("{$Request.param.fid}");
+                        } else {
+                            layui.layer.msg(data.msg);
+                        }
+                    }
+                });
+            });
+    });
+    </script>
+    <script src="__TMPL__/public/assets/js/slippry.min.js"></script>
+    <script type="text/javascript" src="__TMPL__/public/assets/js/citydata.js"></script>
+    <script type="text/javascript" src="__TMPL__/public/assets/js/city-picker.js"></script>
+    <hook name="before_body_end" />
+</body>
+
+</html>

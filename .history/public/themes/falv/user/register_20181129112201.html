@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>注册</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/city-picker.css" />
+    <include file="public@head"></include>
+    <style>
+      .bg {
+        animation: slide 3s ease-in-out infinite alternate;
+        background-image: linear-gradient(
+          -60deg,
+          #ffffff 50%,
+          rgb(247, 234, 255) 50%
+        );
+        bottom: 0;
+        left: -50%;
+        opacity: 0.5;
+        position: fixed;
+        right: -50%;
+        top: 0;
+        z-index: -1;
+      }
+
+      .bg2 {
+        animation-direction: alternate-reverse;
+        animation-duration: 4s;
+      }
+
+      .bg3 {
+        animation-duration: 5s;
+      }
+      @keyframes slide {
+        0% {
+          transform: translateX(-25%);
+        }
+        100% {
+          transform: translateX(25%);
+        }
+      }
+      .city-picker-selector .selector-item {
+        width: calc(50% - 10px);
+        margin: 0;
+        margin-left: 20px;
+        float: left;
+      }
+      .city-picker-selector .selector-item:first-child {
+        margin-left: 0px;
+      }
+    </style>
+  </head>
+
+  <body class="body-white">
+    <include file="public@nav"></include>
+    <div class="bg"></div>
+    <div class="bg bg2"></div>
+    <div class="bg bg3"></div>
+    <div class="container mt-4 tc-main">
+      <div
+        class="col-md-8 mx-auto my-4 register-choose faster card
+          box-shadow"
+      >
+        <div class="card-body">
+          <h5 class="card-title" style="text-align: center">请选择会员类型</h5>
+          <div class="row justify-content-md-center">
+            <div class="col-md-4 center-block">
+              <div class="card my-3">
+                <div class="card-header text-center">公众用户</div>
+                <div class="card-body">
+                  <p class="text-center">
+                    <img
+                      src="https://css.66law.cn/images/login/zc-public.jpg"
+                      alt=""
+                    />
+                  </p>
+                  <p>
+                    注册公众会员后，您可免费向律师咨询法律问题、免费发布咨询、布案件委托、查找法律条文…
+                  </p>
+                  <button
+                    type="button"
+                    id="private"
+                    class="btn btn-outline-secondary btn-block"
+                  >
+                    注册公众用户
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 my-3 center-block">
+              <div class="card">
+                <div class="card-header text-center">机构用户</div>
+                <div class="card-body">
+                  <p class="text-center">
+                    <img
+                      src="https://css.66law.cn/images/login/zc-lawyer.jpg"
+                      alt=""
+                    />
+                  </p>
+                  <p>
+                    注册律师会员后，您可免费发布文章、查看案件委托、查找法律条文、获得免费个人主页…
+                  </p>
+                  <button
+                    type="button"
+                    id="institution"
+                    class="btn btn-outline-secondary btn-block"
+                  >
+                    注册机构用户
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8 mx-auto my-4 private-reg faster card box-shadow">
+        <div class="card-body">
+          <a href="javascript:;" class="back-reg"
+            ><i
+              class="fa
+                fa-chevron-left"
+              aria-hidden="true"
+            ></i
+            >&nbsp;返回</a
+          >
+          <div class="row justify-content-md-center">
+            <div class="col-md-6 mt-3">
+              <h4 class="text-center">公众用户注册</h4>
+              <hr />
+              <php>
+                $mobile_tab_active=empty($theme_vars['enable_mobile'])?'':'active';
+                $email_tab_active=empty($theme_vars['enable_mobile'])?'active':'';
+              </php>
+
+              <php> $is_open_registration = cmf_is_open_registration(); </php>
+              <div class="tab-content">
+                <notempty name="theme_vars.enable_mobile">
+                  <div class="tab-pane {$mobile_tab_active}" id="mobile">
+                    <form
+                      class="js-ajax-form"
+                      action="{:url('user/Register/doRegister')}"
+                      method="post"
+                    >
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          name="username"
+                          placeholder="手机号"
+                          class="form-control"
+                          id="js-mobile-input"
+                        />
+                      </div>
+
+                      <div class="form-group">
+                        <div style="position: relative;">
+                          <input
+                            type="text"
+                            name="captcha"
+                            placeholder="验证码"
+                            class="form-control"
+                            style="width: 50%;float: left;margin-right: 5px"
+                          />
+                          <captcha
+                            height="38"
+                            width="160"
+                            font-size="20"
+                          ></captcha>
+                        </div>
+                      </div>
+
+                      <empty name="is_open_registration">
+                        <div class="form-group">
+                          <div style="position: relative;">
+                            <input
+                              type="text"
+                              name="code"
+                              placeholder="手机验证码"
+                              style="width:170px;"
+                              class="form-control"
+                            />
+                            <a
+                              class="btn btn-success js-get-mobile-code"
+                              style="width: 163px;position:
+                                absolute;top:0;right: 0;margin-right: 0px"
+                              data-wait-msg="[second]秒后才能再次获取"
+                              data-mobile-input="#js-mobile-input"
+                              data-url="{:url('user/VerificationCode/send')}"
+                              data-type="register"
+                              data-init-second-left="60"
+                              >获取手机验证码</a
+                            >
+                          </div>
+                        </div>
+                      </empty>
+
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          name="user_login"
+                          placeholder="用户名"
+                          class="form-control"
+                        />
+                      </div>
+
+                      <div class="form-group">
+                        <input
+                          type="password"
+                          name="password"
+                          placeholder="密码"
+                          class="form-control"
+                        />
+                      </div>
+
+                      <div
+                        class="custom-control custom-checkbox login-checkbox
+                          ml-1 mb-2"
+                      >
+                        <input
+                          type="checkbox"
+                          class="custom-control-input"
+                          id="checkbox-private"
+                        />
+                        <label
+                          class="custom-control-label"
+                          for="checkbox-private"
+                          >我已阅读</label
+                        >
+                        <a href="javascript:;" class="readme"
+                          >《华信网站点服务条款》</a
+                        >
+                      </div>
+
+                      <div class="form-group">
+                        <button
+                          class="btn btn-primary btn-block js-ajax-submit"
+                          type="submit"
+                          data-wait="1500"
+                          style="margin-left: 0px;"
+                          id="confirm-private"
+                          disabled
+                        >
+                          确定注册
+                        </button>
+                      </div>
+
+                      <div class="form-group" style="text-align: center;">
+                        <p>
+                          已有账号?
+                          <a href="{:cmf_url('user/Login/index')}"
+                            >点击此处登录</a
+                          >
+                        </p>
+                      </div>
+                    </form>
+                  </div>
+                </notempty>
+                <div class="tab-pane {$email_tab_active}" id="email">
+                  <form
+                    class="js-ajax-form"
+                    action="{:url('user/register/doRegister')}"
+                    method="post"
+                  >
+                    <div class="form-group">
+                      <input
+                        type="text"
+                        name="username"
+                        placeholder="邮箱"
+                        class="form-control"
+                        id="js-email-input"
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <div style="position: relative;">
+                        <input
+                          type="text"
+                          name="captcha"
+                          placeholder="验证码"
+                          class="form-control"
+                          style="width: 170px;float: left;margin-right: 30px"
+                        />
+                        <captcha
+                          height="38"
+                          width="160"
+                          font-size="20"
+                        ></captcha>
+                      </div>
+                    </div>
+
+                    <empty name="is_open_registration">
+                      <div class="form-group">
+                        <div style="position: relative;">
+                          <input
+                            type="text"
+                            name="code"
+                            placeholder="邮件验证码"
+                            style="width:170px;"
+                            class="form-control"
+                          />
+                          <a
+                            class="btn btn-success js-get-email-code"
+                            style="width: 163px;position:
+                              absolute;top:0;right:
+                              0;"
+                            data-wait-msg="[second]秒后才能再次获取"
+                            data-email-input="#js-email-input"
+                            data-url="{:url('user/VerificationCode/send')}"
+                            data-type="register"
+                            data-init-second-left="60"
+                            >获取邮箱验证码</a
+                          >
+                        </div>
+                      </div>
+                    </empty>
+
+                    <div class="form-group">
+                      <input
+                        type="password"
+                        name="password"
+                        placeholder="密码"
+                        class="form-control"
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <button
+                        class="btn btn-primary btn-block js-ajax-submit"
+                        type="submit"
+                        data-wait="1500"
+                        style="margin-left: 0px;"
+                      >
+                        确定注册
+                      </button>
+                    </div>
+
+                    <div class="form-group" style="text-align: center;">
+                      <p>
+                        已有账号?
+                        <a href="{:cmf_url('user/Login/index')}"
+                          >点击此处登录</a
+                        >
+                      </p>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="col-md-8 mx-auto my-4 institution-reg faster card
+          box-shadow"
+      >
+        <div class="card-body">
+          <a href="javascript:;" class="back-reg"
+            ><i
+              class="fa
+                fa-chevron-left"
+              aria-hidden="true"
+            ></i
+            >&nbsp;返回</a
+          >
+          <div class="row justify-content-md-center">
+            <div class="col-md-6 mt-3">
+              <h4 class="text-center">机构用户注册</h4>
+              <hr />
+              <php>
+                $mobile_tab_active=empty($theme_vars['enable_mobile'])?'':'active';
+                $email_tab_active=empty($theme_vars['enable_mobile'])?'active':'';
+              </php>
+
+              <php> $is_open_registration = cmf_is_open_registration(); </php>
+              <div class="tab-content">
+                <notempty name="theme_vars.enable_mobile">
+                  <div class="tab-pane {$mobile_tab_active}" id="mobile">
+                    <form
+                      class="js-ajax-form"
+                      action="{:url('user/Register/doRegisterInstitution')}"
+                      method="post"
+                    >
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          name="username"
+                          placeholder="手机号"
+                          class="form-control"
+                          id="js-mobile-input2"
+                        />
+                      </div>
+
+                      <div class="form-group">
+                        <div style="position: relative;">
+                          <input
+                            type="text"
+                            name="captcha"
+                            placeholder="验证码"
+                            class="form-control"
+                            style="width: 50%;float: left;margin-right: 5px"
+                          />
+                          <captcha
+                            height="38"
+                            width="160"
+                            font-size="20"
+                          ></captcha>
+                        </div>
+                      </div>
+
+                      <empty name="is_open_registration">
+                        <div class="form-group">
+                          <div style="position: relative;">
+                            <input
+                              type="text"
+                              name="code"
+                              placeholder="手机验证码"
+                              style="width:170px;"
+                              class="form-control"
+                              id="#js-mobile-input2"
+                            />
+                            <a
+                              class="btn btn-success js-get-mobile-code"
+                              style="width: 163px;position:
+                                absolute;top:0;right: 0;margin-right: 0px"
+                              data-wait-msg="[second]秒后才能再次获取"
+                              data-mobile-input="#js-mobile-input2"
+                              data-url="{:url('user/VerificationCode/send')}"
+                              data-type="register"
+                              data-init-second-left="60"
+                              >获取手机验证码</a
+                            >
+                          </div>
+                        </div>
+                      </empty>
+
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          name="user_login"
+                          placeholder="用户名"
+                          class="form-control"
+                        />
+                      </div>
+
+                      <div class="form-group">
+                        <input
+                          type="password"
+                          name="password"
+                          placeholder="密码"
+                          class="form-control"
+                        />
+                      </div>
+
+                      <hr />
+
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          name="real_name"
+                          placeholder="负责人真实姓名"
+                          class="form-control"
+                        />
+                      </div>
+
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          name="institution_name"
+                          placeholder="机构名称"
+                          class="form-control"
+                        />
+                      </div>
+
+                      <div class="form-group">
+                        <div
+                          class="city-picker-selector"
+                          id="city-picker-selector"
+                        ></div>
+                      </div>
+
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          name="phone_number"
+                          placeholder="机构联系电话"
+                          class="form-control"
+                        />
+                      </div>
+
+                      <?php $field= think\Db::name('field')->select(); ?>
+
+                      <div class="form-group">
+                        <select placeholder="擅长项目" class="multi-select">
+                          <foreach name="field" item="item">
+                            <option value="{$item.id}">{$item.name}</option>
+                          </foreach>
+                        </select>
+                      </div>
+
+                      <div
+                        class="custom-control custom-checkbox login-checkbox
+                            ml-1 mb-2"
+                      >
+                        <input
+                          type="checkbox"
+                          class="custom-control-input"
+                          id="checkbox-institution"
+                          name="accept"
+                        />
+                        <label
+                          class="custom-control-label"
+                          for="checkbox-institution"
+                          >我已阅读</label
+                        >
+                        <a href="javascript:;" class="readme"
+                          >《华信网站点服务条款》</a
+                        >
+                      </div>
+
+                      <div class="form-group">
+                        <button
+                          class="btn btn-primary btn-block js-ajax-submit"
+                          type="submit"
+                          data-wait="1500"
+                          style="margin-left: 0px;"
+                          id="confirm-institution"
+                          disabled
+                        >
+                          提交审核
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </notempty>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /container -->
+    <script src="__STATIC__/js/jquery-ui.min.js"></script>
+    <include file="public@scripts"></include>
+    <script src="__STATIC__/js/custom.js"></script>
+    <script>
+      var selector3 = $("#city-picker-selector").cityPicker({
+        dataJson: cityData,
+        renderMode: true,
+        search: true,
+        autoSelected: true,
+        keyboard: true,
+        level: 2,
+        onChoiceEnd: function() {
+          console.log(this.values);
+        }
+      });
+      $("#checkbox-institution").change(function(e) {
+        if ($("#checkbox-institution").is(":checked")) {
+          $("#confirm-institution").removeAttr("disabled");
+        } else {
+          $("#confirm-institution").attr("disabled", "disabled");
+        }
+      });
+      $(".multi-select").selectify();
+    </script>
+  </body>
+</html>

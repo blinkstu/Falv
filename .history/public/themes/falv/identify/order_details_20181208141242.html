@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{$user_info.user_login} - 订单详情</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <include file="public@head"></include>
+    <style>
+      .control-label {
+        float: left;
+        width: 70px;
+      }
+
+      .city-picker-selector .selector-item {
+        width: calc(50% - 10px);
+        margin: 0;
+        margin-left: 20px;
+        float: left;
+      }
+
+      .city-picker-selector .selector-item:first-child {
+        margin-left: 0px;
+      }
+    </style>
+  </head>
+
+  <body id="top">
+    <include file="public@nav"></include>
+    <div class="container tc-main">
+      <div class="row py-2">
+        <div class="col-md-6">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <i class="fa fa-dot-circle-o" aria-hidden="true"></i>
+
+              &nbsp;&nbsp;当前位置：
+
+              <li class="breadcrumb-item"><a href="/">首页</a></li>
+
+              <li class="breadcrumb-item">
+                <a href="{:url('identify/identify/myOrder')}">订单列表</a>
+              </li>
+
+              <li class="breadcrumb-item active">订单详情</li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+      <div class="box-shadow order-details">
+        <div class="ui four top attached steps">
+          <div class="active step">
+            <i class="payment icon"></i>
+            <div class="content">
+              <div class="title">付款</div>
+              <div class="description">完成付款</div>
+            </div>
+          </div>
+          <div class="disabled step">
+            <i class="payment icon"></i>
+            <div class="content">
+              <div class="title">等待鉴定</div>
+              <div class="description">将分配给机构，为您进行鉴定</div>
+            </div>
+          </div>
+          <div class="disabled step">
+            <i class="payment icon"></i>
+            <div class="content">
+              <div class="title">确认鉴定</div>
+              <div class="description">检查上传的鉴定资料，确认付款</div>
+            </div>
+          </div>
+          <div class="disabled step">
+            <i class="info icon"></i>
+            <div class="content"><div class="title">完成订单</div></div>
+          </div>
+        </div>
+        <div class="ui attached active tab segment">
+          <div class="row">
+            <div class="col-md-8">
+              <table class="ui table very basic">
+                <tr>
+                  <td>订单编号</td>
+                  <td>{$order.out_trade_no}</td>
+                </tr>
+                <tr>
+                  <td>创建时间</td>
+                  <td>{$order.create_time}</td>
+                </tr>
+              </table>
+            </div>
+            <div class="col-md-4">
+              <div class="order-status">
+                <table class="table table-borderless mt-4">
+                  <tr>
+                    <th>订单状态</th>
+                    <td>{:statusText($order.status)}</td>
+                  </tr>
+                  <tr>
+                    <th>订单总计</th>
+                    <td><span class="price">￥{$order.total_amount}</span></td>
+                  </tr>
+                </table>
+              </div>
+              <hr />
+              <div class="row">
+                <div class="col-md-12">
+                  <a
+                    class="btn btn-sm btn-light"
+                    href="{:url('identify/identify/myOrder')}"
+                    >返回</a
+                  >&nbsp;
+                  <button class="btn btn-light btn-sm">取消订单</button>
+                  <button
+                    class="ui icon button yellow large right floated alipay"
+                  >
+                    <i class="fab fa-alipay" style="font-weight: 500;"></i>
+                    支付宝付款
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ui top attached tabular menu border-blue">
+          <div class="active item border-blue">订单详情</div>
+        </div>
+        <div class="ui bottom attached active tab segment border-blue">
+          <div class="row">
+            <div class="col-md-6">
+              <table class="ui celled padded table ">
+                <tr>
+                  <td>发起人用户名</td>
+                  <td>{$user_info.user_login}</td>
+                </tr>
+                <tr>
+                  <td>手机号码</td>
+                  <td>{$user_info.mobile}</td>
+                </tr>
+                <tr>
+                  <td>相关领域</td>
+                  <td>
+                    <foreach name="order.fields_list" item="field">
+                      <span>{$field.name}</span>
+                    </foreach>
+                  </td>
+                </tr>
+                <tr>
+                  <td>发起人城市</td>
+                  <td>
+                    <span class="city_name" data-id="{$order.city_id}"></span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>收件地址</td>
+                  <td>{$order.address}</td>
+                </tr>
+              </table>
+            </div>
+            <div class="col-md-6">
+              <table class="ui celled padded table">
+                <tr>
+                  <td colspan="2">
+                    <p>详细描述</p>
+                    <textarea
+                      class="ui floating message warning w-100"
+                      name=""
+                      id=""
+                      disabled
+                      cols="30"
+                      rows="10"
+                    >
+                                                                            {$order.discription}
+                                                                        </textarea
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td>附件</td>
+                  <td>
+                    <ul class="attachment">
+                      <if condition="empty($order['attachment'])">
+                        暂无附件
+                      </if>
+                      <foreach name="order.attachment" key="key" item="item">
+                        <li>
+                          <php>echo $key + 1 .'.';</php>
+                          <a
+                            href="/upload/{$item.file_url}"
+                            title="点击下载"
+                            target="_blank"
+                          >
+                            {$item.file_name}
+                          </a>
+                        </li>
+                      </foreach>
+                    </ul>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ui basic modal">
+      <div class="ui icon header">
+        <i class="archive icon"></i> Archive Old Messages
+      </div>
+      <div class="content">
+        <p>
+          Your inbox is getting full, would you like us to enable automatic
+          archiving of old messages?
+        </p>
+      </div>
+      <div class="actions">
+        <div class="ui red basic cancel inverted button">
+          <i class="remove icon"></i> No
+        </div>
+        <div class="ui green ok inverted button">
+          <i class="checkmark icon"></i> Yes
+        </div>
+      </div>
+    </div>
+
+    <include file="public@footer"></include>
+    <!-- /container -->
+    <include file="public@scripts"></include>
+    <script src="__STATIC__/js/jquery-ui.min.js"></script>
+    <script src="__STATIC__/js/custom.js"></script>
+    <script>
+      $(".alipay").on("click", function() {
+        $(".ui.basic.modal").modal("show");
+      });
+      $(function() {
+        $('[data-toggle="tooltip"]').tooltip();
+      });
+      var value = $(".city_name")
+          .data("id")
+          .toString(),
+        parent_name,
+        city_name;
+      cityData.forEach(function(element) {
+        if (value === element.id) {
+          city_name = element.name;
+          value = element.parentId;
+          cityData.forEach(function(element) {
+            if (value === element.id) {
+              parent_name = element.name;
+            }
+          });
+        }
+      });
+      $(".city_name").html(parent_name + " " + city_name);
+    </script>
+  </body>
+</html>

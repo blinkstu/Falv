@@ -1,0 +1,171 @@
+<div class="container-fill top">
+    <div class="container">
+        <span class="heiti-std">欢迎访问公信私法鉴定网站</span>
+        <php>$user=cmf_get_current_user();</php>
+        <if condition="empty($user['mobile'])">
+            <div class="float-right top-right">
+                <a href="{:cmf_url('user/Login/index')}">登录</a>
+                <a href="{:cmf_url('user/Register/index')}">注册</a>
+            </div>
+        <else />
+            <div class="float-right top-right">
+                <a href="{:cmf_url('user/profile/center')}">{$user['mobile']}</a>,<a href="{:cmf_url('user/Index/Logout')}">退出</a>
+            </div>
+        </if>
+    </div>
+</div>
+<section class="main-top order-2 d-none d-md-block box-shadow ">
+    <div class="container">
+        <div class="content">
+            <a href="/" class="logo">
+                <img src="__TMPL__/public/assets/images/logo.png" alt="">
+            </a>
+            <ul id="main-menu" class="nav navbar-nav">
+                <navigation nav-id="" root="" id="main-navigation" class="nav navbar-nav navbar-nav-custom" max-level="0">
+                    <navigationMenu>
+                        <if condition="$level gt 1">
+                            <li class="menu-item menu-item-level-{$level} levelgt1">
+                                <a href="{$menu.href|default=''}" target="{$menu.target|default=''}">
+                                    {$menu.name|default=''}
+                                </a>
+                            </li>
+                            <else />
+                            <li class="menu-item menu-item-level-{$level}">
+                                <a href="{$menu.href|default=''}" target="{$menu.target|default=''}">
+                                    {$menu.name|default=''}
+                                </a>
+                            </li>
+                        </if>
+                    </navigationMenu>
+                    <navigationFolder root="li" class="dropdown dropdown-custom dropdown-custom-level-{$level}" dropdown="ul"
+                        dropdown-class="box-shadow d-down faster">
+                        <a href="#" class="dropdown-toggle-{$level}" >
+                            {$menu.name|default=''}
+                        </a>
+                    </navigationFolder>
+                </navigation>
+                <li class="menu-item menu-item-level-1 levelgt1 pro-ask ">
+                    <a href="#"  >
+                        专业咨询
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+<nav class="navbar nav-bar navbar-expand-lg navbar-dark py-2 py-md-0 mb-4 order-1 d-none">
+    <div class="container">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#"><i class="fa fa-home"></i> 首页</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fa fa-question-circle"></i> 法律资讯</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        下拉菜单
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</nav>
+
+<nav class="navbar navbar-default navbar-fixed-top active" style="display: none;">
+    <div class="container active">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+                aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="__ROOT__/">{$theme_vars.company_name|default='ThinkCMF'}</a>
+        </div>
+
+        <div class="collapse navbar-collapse active" id="bs-example-navbar-collapse-1">
+            <ul id="main-menu" class="nav navbar-nav">
+                <navigation nav-id="" root="" id="main-navigation" class="nav navbar-nav navbar-nav-custom" max-level="0">
+                    <navigationMenu>
+                        <if condition="$level gt 1">
+                            <li class="menu-item menu-item-level-{$level} levelgt1">
+                                <a href="{$menu.href|default=''}" target="{$menu.target|default=''}">
+                                    {$menu.name|default=''}
+                                </a>
+                            </li>
+                            <else />
+                            <li class="menu-item menu-item-level-{$level}">
+                                <a href="{$menu.href|default=''}" target="{$menu.target|default=''}">
+                                    {$menu.name|default=''}
+                                </a>
+                            </li>
+                        </if>
+                    </navigationMenu>
+                    <navigationFolder root="li" class="dropdown dropdown-custom dropdown-custom-level-{$level}"
+                        dropdown="ul" dropdown-class="dropdown-menu dropdown-menu-level-{$level}">
+                        <a href="#" class="dropdown-toggle dropdown-toggle-{$level}" data-toggle="dropdown">
+                            {$menu.name|default=''}<span class="caret"></span>
+                        </a>
+                    </navigationFolder>
+                </navigation>
+            </ul>
+            <ul class="nav navbar-nav navbar-right" id="main-menu-user">
+                <!--
+                <li class="login">
+                    <a class="dropdown-toggle notifactions" href="/index.php/user/notification/index"> <i
+                            class="fa fa-envelope"></i> <span class="count">0</span></a>
+                </li>
+                -->
+                <li class="dropdown user login">
+                    <a class="dropdown-toggle user" data-toggle="dropdown" href="#">
+                        <php>$user=cmf_get_current_user();</php>
+                        <if condition="empty($user['avatar'])">
+                            <img src="__TMPL__/public/assets/images/headicon.png" class="headicon">
+                            <else />
+                            <img src="{:cmf_get_user_avatar_url($user['avatar'])}" class="headicon" width="30" />
+                        </if>
+                        <span class="user-nickname"></span><b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu pull-right">
+                        <li><a href="{:cmf_url('user/Profile/center')}"><i class="fa fa-home"></i> &nbsp;个人中心</a></li>
+                        <li class="divider"></li>
+                        <li><a href="{:cmf_url('user/Index/logout')}"><i class="fa fa-sign-out"></i> &nbsp;退出</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown user offline" style="display: list-item;">
+                    <a class="dropdown-toggle user" data-toggle="dropdown" href="#">
+                        <img src="__TMPL__/public/assets/images/headicon.png" class="headicon">
+                        登录<b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu pull-right">
+                        <li><a href="{:cmf_url('user/Login/index')}"><i class="fa fa-sign-in"></i> &nbsp;登录</a></li>
+                        <li class="divider"></li>
+                        <li><a href="{:cmf_url('user/Register/index')}"><i class="fa fa-user"></i> &nbsp;注册</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <form class="navbar-form navbar-right" method="post" action="{:cmf_url('portal/Search/index')}">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="keyword" placeholder="Search" value="{:input('param.keyword','')}">
+                </div>
+                <input type="submit" class="btn btn-primary" value="Go" style="margin:0" />
+            </form>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>- 个人中心</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <include file="public@head"></include>
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/city-picker.css" />
+    <style>
+      .control-label {
+        font-weight: bold;
+        float: left;
+        width: 70px;
+      }
+      .city-picker-selector .selector-item {
+        width: calc(50% - 10px);
+        margin: 0;
+        margin-left: 20px;
+        float: left;
+      }
+      .city-picker-selector .selector-item:first-child {
+        margin-left: 0px;
+      }
+    </style>
+  </head>
+  <body id="top">
+    <include file="public@nav"></include>
+    <div class="container tc-main">
+      <div class="alert alert-danger" role="alert">
+        您的账号当前正在审核中，审核通过后即可进行正常操作
+      </div>
+      <div class="card text-left">
+        <div class="card-body">
+          <h4 class="card-title">个人资料</h4>
+          <div class="info-personal">
+            <hr />
+            <form
+              class="js-ajax-form"
+              action="{:url('user/check/editProfilePost')}"
+              method="post"
+            >
+              <div class="form-group">
+                <label for="">负责人真实姓名</label>
+                <input
+                  type="text"
+                  name="real_name"
+                  placeholder="负责人真实姓名"
+                  class="form-control"
+                  value="{$institution.real_name}"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="">机构名称</label>
+                <input
+                  type="text"
+                  name="institution_name"
+                  placeholder="机构名称"
+                  class="form-control"
+                  value="{$institution.institution_name}"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="">所在地</label>
+                <div
+                  class="city-picker-selector"
+                  id="city-picker-selector"
+                ></div>
+              </div>
+
+              <div class="form-group">
+                <label for="">机构联系电话</label>
+                <input
+                  type="text"
+                  name="phone_number"
+                  placeholder="机构联系电话"
+                  class="form-control"
+                  value="{$institution.phone_number}"
+                />
+              </div>
+
+              <div class="form-group form-group-sm col-sm-6">
+                <div class="row">
+                  <label for="first_name" class="col-sm-3 col-form-label"
+                    >First Name</label
+                  >
+                  <div class="col-sm-9">
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="first_name"
+                      name="first_name"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="select-wrap" style="margin-top: 40px;">
+                  <div class="select">
+                    <p style="margin: -45px 0px 15px;">擅长项目</p>
+                    <div class="arrow"></div>
+                    <foreach name="field" item="vo">
+                      <div class="filter active" style="display: inline-block;">
+                        {$vo.name}<input
+                          name="field[data][]"
+                          value="{$vo.id}"
+                          type="hidden"
+                        />
+                      </div>
+                    </foreach>
+                  </div>
+                  <ul class="filter-wrap" style="display: none;">
+                    <foreach name="exceptField" item="vo">
+                      <li data-id="{$vo.id}">{$vo.name}</li>
+                    </foreach>
+                  </ul>
+                </div>
+              </div>
+              <button
+                class="btn btn-primary btn-block js-ajax-submit"
+                type="submit"
+                data-wait="1500"
+                style="margin-left: 0px;"
+              >
+                保存
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <include file="public@footer"></include>
+    </div>
+    <!-- /container -->
+    <include file="public@scripts"></include>
+    <script src="__TMPL__/public/assets/js/citydata.js"></script>
+    <script src="__TMPL__/public/assets/js/city-picker.js"></script>
+    <script src="__STATIC__/js/jquery-ui.min.js"></script>
+    <script src="__STATIC__/js/custom.js"></script>
+    <script>
+      $(".multi-select").selectify_edit();
+      var selector3 = $("#city-picker-selector").cityPicker({
+        dataJson: cityData,
+        renderMode: true,
+        search: true,
+        autoSelected: true,
+        keyboard: true,
+        level: 2,
+        onChoiceEnd: function() {
+          console.log(this.values);
+        }
+      });
+
+      var cityID = "{$institution.city_id}";
+      var province = cityID.slice(0, 3) + "000";
+      console.log(province);
+      console.log(cityID);
+
+      selector3.setCityVal(province + "," + cityID);
+    </script>
+  </body>
+</html>

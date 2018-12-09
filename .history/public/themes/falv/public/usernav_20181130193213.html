@@ -1,0 +1,64 @@
+<php>$isInstitution = $role_info['role_id'] == 2; </php>
+<php>$isUser = $role_info['role_id'] == 1; </php>
+
+<div class="list-group user-nav">
+  <div class="left-section"><i class="fa fa-user fa-fw"></i> 个人信息</div>
+  <a
+    class="list-group-item  {$current_action=='center' ? 'active' : ''}"
+    href="{:cmf_url('user/Profile/center')}"
+    >基本资料</a
+  >
+  <a
+    class="list-group-item  {$current_action=='password' ? 'active' : ''}"
+    href="{:cmf_url('user/Profile/password')}"
+    >修改密码</a
+  >
+  <a
+    class="list-group-item  {$current_action=='avatar' ? 'active' : ''}"
+    href="{:cmf_url('user/Profile/avatar')}"
+    >编辑头像</a
+  >
+  <a
+    class="list-group-item  {$current_action=='binding' ? 'active' : ''}"
+    href="{:cmf_url('user/Profile/binding')}"
+    >绑定账号</a
+  >
+  <a class="list-group-item" href="{:cmf_url('user/Profile/binding')}"
+    >收货地址管理</a
+  >
+  <if
+    condition="($user_info.user_status == 3) OR ($user_info.user_status == 5) AND ($role_info.role_id == 2)"
+  >
+    <a
+      class="list-group-item  {$current_controller=='Check' ? 'active' : ''}"
+      href="{:cmf_url('user/Check/Index')}"
+      >机构资质鉴定</a
+    >
+  </if>
+  <div class="left-section">
+    <i class="fa fa-university fa-fw"></i> 机构项目
+  </div>
+  <a class="list-group-item " href="{:cmf_url('user/Profile/center')}"
+    >我的鉴定订单</a
+  >
+  <if condition="$isUser">
+    <a class="list-group-item" href="{:cmf_url('user/Profile/center')}"
+      >我要鉴定</a
+    >
+  </if>
+  <if condition="$isInstitution">
+    <a class="list-group-item" href="{:cmf_url('user/Profile/center')}"
+      >我的机构主页</a
+    >
+  </if>
+  <if condition="$isInstitution">
+    <div class="left-section"><i class="fa fa-money fa-fw"></i> 账户管理</div>
+    <a class="list-group-item " href="{:cmf_url('user/Profile/center')}"
+      >收支明细</a
+    >
+    <a class="list-group-item " href="{:cmf_url('user/Profile/center')}"
+      >提现申请</a
+    >
+  </if>
+  <div class="bar-place-holder d-none d-md-block"></div>
+</div>

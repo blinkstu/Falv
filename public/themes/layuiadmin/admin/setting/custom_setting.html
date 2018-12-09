@@ -1,0 +1,224 @@
+<include file="public@header" ></include>
+<hook name="admin_before_head_end" />
+<link rel="stylesheet" href="__STATIC__/js/noty.css">
+<link rel="stylesheet" href="__STATIC__/js/themes/mint.css">
+</head>
+
+<body style='background: #f2f2f2'>
+    <div class="layui-fluid">
+        <div class="layui-card">
+            <div class="layui-card-body">
+                <form class="layui-form" lay-filter="layuiadmin-app-form-list" id="layuiadmin-app-form-list" style="padding: 20px;">
+                    <div class="layui-tab">
+                        <ul class="layui-tab-title">
+                            <li class="layui-this">普通设置</li>
+                            <li>服务条款</li>
+                            <li>权限分配</li>
+                            <li>商品管理</li>
+                            <li>订单管理</li>
+                        </ul>
+                        <div class="layui-tab-content">
+                            <div class="layui-tab-item layui-show">
+                                <table lay-skin="nob" class="layui-table" class="table">
+                                    <tr>
+                                        <td style="width: 257px;">
+                                            <div class="layui-form-mid">微信公众号Appid</div>
+                                        </td>
+                                        <td>
+                                            <div class="layui-input-inline">
+                                                <input type="text" name="appId" value="{$custom_settings.appId}" 
+                                                    placeholder="AppID" autocomplete="off" class="layui-input">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="layui-form-mid">微信公众号Secret</div>
+                                        </td>
+                                        <td>
+                                            <div class="layui-input-inline">
+                                                <input type="text" name="secret" value="{$custom_settings.secret}"
+                                                    placeholder="Secert" autocomplete="off" class="layui-input">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="layui-form-mid">调度服务器地址</div>
+                                        </td>
+                                        <td>
+                                            <div class="layui-input-inline">
+                                                <input type="text" name="runtimeServerUrl" value="{$custom_settings.runtimeServerUrl}"
+                                                    placeholder="调度服务器地址" autocomplete="off" class="layui-input">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="layui-tab-item">内容2</div>
+                            <div class="layui-tab-item">内容3</div>
+                            <div class="layui-tab-item">内容4</div>
+                            <div class="layui-tab-item">内容5</div>
+                        </div>
+                    </div>
+                    <div class="layui-row">
+                        <div class="layui-col-xs7">
+                            <button type="submit" lay-submit="" lay-filter="layuiadmin-app-form-submit" class="layui-btn layui-btn-warm">保存</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script src="__TMPL__/public/assets/layui/layui.js"></script>
+    <script src="__STATIC__/js/noty.js"></script>
+    <script src="https://cdn.bootcss.com/mo-js/0.288.2/mo.min.js"></script>
+    <script src="__STATIC__/js/custom.js"></script>
+
+    <script>
+        layui.config({
+            base: '__TMPL__/public/assets/' //静态资源所在路径
+        }).extend({
+            index: 'lib/index'
+        }).use(['index', 'table', 'layer', 'form'], function () {
+            layui.form.on('submit(layuiadmin-app-form-submit)', function (data) {
+                $(data.elem).attr('disabled', true);
+                $(data.elem).html('<i class="layui-icon layui-icon-set layui-anim layui-anim-rotate layui-anim-loop"></i>请稍后...');
+                field = { options: data.field };
+                $.ajax({
+                    url: "/admin/setting/liftSettingPost",
+                    type: "post",
+                    data: field,
+                    success: data => {
+                        if (data.code == 1) {
+                            new Noty({
+                                theme: 'mint',
+                                type: 'success',
+                                layout: 'topCenter',
+                                animation: {
+                                    open: function (promise) {
+                                        var n = this;
+                                        var Timeline = new mojs.Timeline();
+                                        var body = new mojs.Html({
+                                            el: n.barDom,
+                                            x: { 500: 0, delay: 0, duration: 500, easing: 'elastic.out' },
+                                            isForce3d: true,
+                                            onComplete: function () {
+                                                promise(function (resolve) {
+                                                    resolve();
+                                                })
+                                            }
+                                        });
+
+                                        var parent = new mojs.Shape({
+                                            parent: n.barDom,
+                                            width: 200,
+                                            height: n.barDom.getBoundingClientRect().height,
+                                            radius: 0,
+                                            x: { [150]: -150 },
+                                            duration: 1.2 * 500,
+                                            isShowStart: true
+                                        });
+
+                                        n.barDom.style['overflow'] = 'visible';
+                                        parent.el.style['overflow'] = 'hidden';
+
+                                        var burst = new mojs.Burst({
+                                            parent: parent.el,
+                                            count: 10,
+                                            top: n.barDom.getBoundingClientRect().height + 75,
+                                            degree: 90,
+                                            radius: 75,
+                                            angle: { [-90]: 40 },
+                                            children: {
+                                                fill: '#EBD761',
+                                                delay: 'stagger(500, -50)',
+                                                radius: 'rand(8, 25)',
+                                                direction: -1,
+                                                isSwirl: true
+                                            }
+                                        });
+
+                                        var fadeBurst = new mojs.Burst({
+                                            parent: parent.el,
+                                            count: 2,
+                                            degree: 0,
+                                            angle: 75,
+                                            radius: { 0: 100 },
+                                            top: '90%',
+                                            children: {
+                                                fill: '#EBD761',
+                                                pathScale: [.65, 1],
+                                                radius: 'rand(12, 15)',
+                                                direction: [-1, 1],
+                                                delay: .8 * 500,
+                                                isSwirl: true
+                                            }
+                                        });
+
+                                        Timeline.add(body, burst, fadeBurst, parent);
+                                        Timeline.play();
+                                    },
+                                    close: function (promise) {
+                                        var n = this;
+                                        new mojs.Html({
+                                            el: n.barDom,
+                                            x: { 0: 500, delay: 10, duration: 500, easing: 'cubic.out' },
+                                            skewY: { 0: 10, delay: 10, duration: 500, easing: 'cubic.out' },
+                                            isForce3d: true,
+                                            onComplete: function () {
+                                                promise(function (resolve) {
+                                                    resolve();
+                                                })
+                                            }
+                                        }).play();
+                                    }
+                                },
+                                text: data.msg,
+                                // animation: {
+                                //     open: 'animated bounceInDown', // Animate.css class names
+                                //     close: 'animated bounceOutUp', // Animate.css class names
+                                // },
+                                timeout: 1200,
+                            }).show();
+                            recover();
+                        } else {
+                            new Noty({
+                                theme: 'mint',
+                                text: data.msg,
+                                type: 'error',
+                                layout: 'topCenter',
+                                // animation: {
+                                //     open: 'animated bounceInDown', // Animate.css class names
+                                //     close: 'animated bounceOutUp', // Animate.css class names
+                                // },
+                                timeout: 1200,
+                                callbacks: {
+                                    afterClose: function () {
+                                        location.reload();
+                                    }
+                                }
+                            }).show();
+                            recover();
+                        }
+                    }
+                });
+
+                function recover() {
+                    $(data.elem).attr('disabled', false);
+                    $(data.elem).html('保存');
+                }
+
+                return false;
+            });
+        });
+
+
+    </script>
+
+
+    <hook name="admin_before_body_end" />
+</body>
+
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{$user_info.user_login} - 订单详情</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <include file="public@head"></include>
+    <style>
+      .control-label {
+        float: left;
+        width: 70px;
+      }
+
+      .city-picker-selector .selector-item {
+        width: calc(50% - 10px);
+        margin: 0;
+        margin-left: 20px;
+        float: left;
+      }
+
+      .city-picker-selector .selector-item:first-child {
+        margin-left: 0px;
+      }
+    </style>
+  </head>
+
+  <body id="top">
+    <include file="public@nav"></include>
+    <div class="container tc-main">
+      <div class="row py-2">
+        <div class="col-md-6">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <i class="fa fa-dot-circle-o" aria-hidden="true"></i>
+
+              &nbsp;&nbsp;当前位置：
+
+              <li class="breadcrumb-item"><a href="/">首页</a></li>
+
+              <li class="breadcrumb-item">
+                <a href="{:url('identify/identify/myOrder')}">订单列表</a>
+              </li>
+
+              <li class="breadcrumb-item active">订单详情</li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+      <div class="box-shadow order-details">
+        <h4>订单：{$order.order_id}</h4>
+      </div>
+      <include file="public@footer"></include>
+    </div>
+    <!-- /container -->
+    <include file="public@scripts"></include>
+    <script src="__STATIC__/js/jquery-ui.min.js"></script>
+    <script src="__STATIC__/js/custom.js"></script>
+    <script></script>
+  </body>
+</html>

@@ -1,0 +1,166 @@
+<!--
+  Le javascript
+  ==================================================
+-->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="__TMPL__/public/assets/js/bootstrap.min.js"></script>
+<script src="__STATIC__/js/frontend.js"></script>
+<script
+  type="text/javascript"
+  src="__TMPL__/public/assets/js/citydata.js"
+></script>
+<script
+  type="text/javascript"
+  src="__TMPL__/public/assets/js/city-picker.js"
+></script>
+<script>
+  $(function() {
+    $.fn.extend({
+      animateCss: function(animationName, callback) {
+        var animationEnd = (function(el) {
+          var animations = {
+            animation: "animationend",
+            OAnimation: "oAnimationEnd",
+            MozAnimation: "mozAnimationEnd",
+            WebkitAnimation: "webkitAnimationEnd"
+          };
+
+          for (var t in animations) {
+            if (el.style[t] !== undefined) {
+              return animations[t];
+            }
+          }
+        })(document.createElement("div"));
+
+        this.addClass("animated " + animationName).one(
+          animationEnd,
+          function() {
+            $(this).removeClass("animated " + animationName);
+
+            if (typeof callback === "function") callback();
+          }
+        );
+
+        return this;
+      }
+    });
+
+    $.fn.hoverDelay = function(c, f, g, b) {
+      var g = g || 200, //hover entry time
+        b = b || 200, //hover departure time
+        f = f || c;
+      var e = [],
+        d = [];
+      return this.each(function(h) {
+        $(this)
+          .mouseenter(function() {
+            var i = this;
+            clearTimeout(d[h]);
+            e[h] = setTimeout(function() {
+              c.apply(i);
+            }, g);
+          })
+          .mouseleave(function() {
+            var i = this;
+            clearTimeout(e[h]);
+            d[h] = setTimeout(function() {
+              f.apply(i);
+            }, b);
+          });
+      });
+    };
+
+    $("#main-menu li.dropdown").hoverDelay(
+      function() {
+        var open = $("#main-menu .open");
+        $(this).addClass("open");
+        if (open.length > 0) {
+          $(this)
+            .children(".d-down")
+            .show();
+        } else {
+          $(this)
+            .children(".d-down")
+            .show();
+          $(this)
+            .children(".d-down")
+            .animateCss("fadeInUp");
+        }
+      },
+      function() {
+        var open = $("#main-menu .open");
+        var that = this;
+        var timeout = setTimeout(function() {
+          $(that).removeClass("open");
+        }, 100);
+        $(this)
+          .children(".d-down")
+          .hide();
+      }
+    );
+
+    $("#main-menu a").each(function() {
+      if ($(this)[0].href == String(window.location)) {
+        $(this)
+          .parentsUntil("#main-menu>ul>li")
+          .addClass("active");
+      }
+    });
+
+    $.post("{:url('user/index/isLogin')}", {}, function(data) {
+      console.log(data);
+      if (data.code == 1) {
+        if (data.data.user.avatar) {
+        }
+
+        $("#main-menu-user span.user-nickname").text(
+          data.data.user.user_nickname
+            ? data.data.user.user_nickname
+            : data.data.user.user_login
+        );
+        $("#main-menu-user li.login").show();
+        $("#main-menu-user li.offline").hide();
+      }
+
+      if (data.code == 0) {
+        $("#main-menu-user li.login").hide();
+        $("#main-menu-user li.offline").show();
+      }
+    });
+
+    (function($) {
+      $.fn.totop = function(opt) {
+        var scrolling = false;
+        return this.each(function() {
+          var $this = $(this);
+          $(window).scroll(function() {
+            if (!scrolling) {
+              var sd = $(window).scrollTop();
+              if (sd > 100) {
+                $this.fadeIn();
+              } else {
+                $this.fadeOut();
+              }
+            }
+          });
+
+          $this.click(function() {
+            scrolling = true;
+            $("html, body").animate(
+              {
+                scrollTop: 0
+              },
+              500,
+              function() {
+                scrolling = false;
+                $this.fadeOut();
+              }
+            );
+          });
+        });
+      };
+    })(jQuery);
+
+    $("#backtotop").totop();
+  });
+</script>

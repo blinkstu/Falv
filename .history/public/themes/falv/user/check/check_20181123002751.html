@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>- 个人中心</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <include file="public@head"></include>
+    <style>
+      .control-label {
+        font-weight: bold;
+        float: left;
+        width: 70px;
+      }
+    </style>
+  </head>
+  <body id="top">
+    <include file="public@nav"></include>
+    <div class="container tc-main">
+      <div class="alert alert-danger" role="alert">
+        您的账号当前正在审核中，审核通过后即可进行正常操作
+      </div>
+      <div class="card text-left">
+        <div class="card-body">
+          <h4 class="card-title">个人资料</h4>
+          <div class="info-personal">
+            <hr />
+
+            <div class="form-group">
+              <input
+                type="text"
+                name="real_name"
+                placeholder="负责人真实姓名"
+                class="form-control"
+              />
+            </div>
+
+            <div class="form-group">
+              <input
+                type="text"
+                name="institution_name"
+                placeholder="机构名称"
+                class="form-control"
+              />
+            </div>
+
+            <div class="form-group">
+              <div class="city-picker-selector" id="city-picker-selector"></div>
+            </div>
+
+            <div class="form-group">
+              <input
+                type="text"
+                name="phone_number"
+                placeholder="机构联系电话"
+                class="form-control"
+              />
+            </div>
+
+            <?php $field= think\Db::name('field')->select(); ?>
+
+            <div class="form-group">
+              <div class="select-wrap" style="margin-top: 40px;">
+                <div class="select">
+                  <p style="margin: -45px 0px 15px;">擅长项目</p>
+                  <div class="arrow"></div>
+                  <foreach name="field" item="vo">
+                    <div class="filter active" style="display: inline-block;">
+                      {$vo.name}<input
+                        name="field[data][]"
+                        value="{$vo.id}"
+                        type="hidden"
+                      />
+                    </div>
+                  </foreach>
+                </div>
+                <ul class="filter-wrap" style="display: none;">
+                  <foreach name="field" item="vo">
+                    <li data-id="2">{$vo.name}</li>
+                  </foreach>
+                  <li data-id="2">交通</li>
+                  <li data-id="6">合同</li>
+                  <li data-id="8">医疗</li>
+                  <li data-id="10">拆迁安置</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <include file="public@footer"></include>
+    </div>
+    <!-- /container -->
+    <include file="public@scripts"></include>
+    <script src="__STATIC__/js/jquery-ui.min.js"></script>
+    <script src="__STATIC__/js/custom.js"></script>
+    <script>
+      $(".multi-select").selectify_edit();
+    </script>
+  </body>
+</html>

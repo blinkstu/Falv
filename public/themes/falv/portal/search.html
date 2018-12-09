@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+	<html>
+	<head>
+		<title>搜索 {$theme_vars.varName1|default=''} </title>
+		<meta name="keywords" content="" />
+		<meta name="description" content="">
+		<include file="public@head"/>
+		<hook name="before_head_end"/>
+	</head>
+<body class="">
+<include file="public@nav"/>
+<div class="container tc-main">
+	    <div class="row py-3">
+				<div class="col-md-6">
+				  <nav aria-label="breadcrumb">
+					<ol class="breadcrumb">
+					  <i class="fa fa-dot-circle-o" aria-hidden="true"></i>
+		  
+					  &nbsp;&nbsp;当前位置：
+		  
+					  <li class="breadcrumb-item">
+						<a href="/#">首页</a>
+					  </li>
+					  <li class="breadcrumb-item active" aria-current="page">‘{$keyword}’的搜索结果</li>
+					</ol>
+				  </nav>
+				</div>
+		  
+				<div class="col-md-6">
+				  <div class="search-box pull-left">
+					<form class="search-form" method="post" action="{:cmf_url('portal/Search/index')}">
+					  <input class="form-control" name="keyword" placeholder="输入您要搜索的内容" value="{$keyword}" type="text"></input>
+					  <button class="btn btn-link search-btn">
+						<i class="fa fa-search"></i>
+					  </button>
+					</form>
+				  </div>
+				</div>
+			  </div>
+	<div class="row">
+		<div class="col-md-12">
+			<php>
+				$where=[
+				'post.create_time'=>['egt',0],
+				'post.post_title'=>['like',"%$keyword%"],
+				'post.post_content'=>['like',"%$keyword%"]
+				];
+			</php>
+
+			<?php
+				function highlight_word( $content, $word, $color ) {
+					$replace = '<span style="color: ' . $color . ';">' . $word . '</span>'; // create replacement
+					$content = str_replace( $word, $replace, $content ); // replace content
+					return $content; // return highlighted data
+				}
+
+				function highlight_words( $content, $keyword, $color ) {
+					$content = htmlspecialchars_decode($content);
+					$content = strip_tags($content);
+					preg_match_all("/./u", $keyword, $arr);
+					$words = $arr[0];
+
+					// loop through words
+					foreach( $words as $word ) {
+					$content = highlight_word( $content, $word, $color ); // highlight word
+					}
+				return $content;
+				}
+
+				function highlight_words_content( $content, $keyword, $color ) {
+					$content = htmlspecialchars_decode($content);
+					$content = strip_tags($content);
+					$str = $content;
+					preg_match_all("/./u", $keyword, $arr);
+					$words = $arr[0];
+
+					// loop through words
+					foreach( $words as $word ) {
+						$content = highlight_word( $content, $word, $color ); // highlight word
+					}
+
+				return mb_substr($content,0,300);
+				}
+			?>
+
+			<foreach name="articles" item="vo">
+				<div class="list-boxes">
+						<h2><a href="{:cmf_url('portal/Article/index',array('id'=>$vo['id']))}"><?php echo highlight_words($vo['post_title'],$keyword,'red') ?></a>
+						</h2>
+						<p><?php echo highlight_words_content($vo['post_content'],$keyword,'red') ?></p>
+						<div>
+							<div class="pull-left">
+								<div class="list-actions">
+									<a style="color:#999" href="javascript:;"><i class="fa fa-eye"></i> &nbsp;<span>{$vo.post_hits}</span></a>
+								</div>
+							</div>
+							<a class="btn btn-light btn-sm pull-right"
+								href="{:cmf_url('portal/Article/index',array('id'=>$vo['id']))}">查看更多</a>
+						</div>
+					</div>
+			</foreach>
+
+
+			<div class="pagination">
+					{$articles->render()}
+			</div>
+
+			<script>
+				function getUrlParam(name) {
+					var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+					var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+					if (r != null) return decodeURI(r[2]); return null; //返回参数值
+				}
+				$('.page-item a.page-link').each(function(index,e){
+					var link = $(e).attr('href');
+					console.log(link)
+					link = link + '&keyword=' + getUrlParam('keyword');
+					$(e).attr('href',link)
+				});
+			</script>
+
+		</div>
+		
+	</div>
+
+	<include file="public@footer"/>
+</div>
+
+<include file="public@scripts"/>
+<hook name="before_body_end"/>
+</body>
+</html>

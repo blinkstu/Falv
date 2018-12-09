@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{$user_login} - 个人中心</title>
+<meta name="keywords" content=""/>
+<meta name="description" content="">
+<include file="public@head" ></include>
+<style>
+.control-label {
+	float: left;
+	width: 70px;
+}
+      .city-picker-selector .selector-item {
+        width: calc(50% - 10px);
+        margin: 0;
+        margin-left: 20px;
+        float: left;
+      }
+      .city-picker-selector .selector-item:first-child {
+        margin-left: 0px;
+      }
+</style>
+</head>
+<body id="top">
+<include file="public@nav" ></include>
+	<div class="container tc-main">
+		<div class="row py-2">
+			<div class="col-md-6">
+				<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					<i class="fa fa-dot-circle-o" aria-hidden="true"></i>
+		
+					&nbsp;&nbsp;当前位置：
+		
+					<li class="breadcrumb-item">
+					<a href="/">首页</a>
+					</li>
+		
+					<li class="breadcrumb-item active">个人中心</li>
+				</ol>
+				</nav>
+			</div>
+		</div>
+		<div class="row  profile box-shadow">
+			<div class="col-md-2 profile-left">
+				<include file="public@usernav" ></include>
+			</div>
+			<div class="col-md-10">
+				<div class="tabs profile-right">
+					<div class="tab-content">
+						<div class="tab-pane active" id="one">
+							<br>
+							<div class="row justify-content-md-center">
+								<div class="col-md-4 text-center">
+								
+								<div class="avatar">
+									<if condition="empty($avatar)">
+										<img src="__TMPL__/public/assets/images/user.png" class="headicon" width="128" />
+										<else />
+										<img src="__ROOT__/upload/{$avatar}" class="headicon" width="128" />
+									</if>
+									<div class="img-rounded"><a href="{:url('profile/avatar')}" class="text">编辑</a></div>
+								</div>
+								<?php if($role_info['role_id'] == 1){ ?>
+								<div class="avatar-text">{$user_login|default='未填写'}&nbsp;&nbsp;<span class="badge badge-pill badge-success text-light">公众用户</span></div>
+								<?php }else{ ?>
+								<div class="avatar-text">{$user_login|default='未填写'}&nbsp;&nbsp;<span class="badge badge-pill badge-danger text-light">机构用户</span></div>
+								<?php } ?>
+								</div>
+							</div>
+							<div class="row justify-content-md-center personal-info-right">
+								<div class="col-md-12">
+									<form class="js-ajax-form" method="post">
+									<div class="datum-title-box">
+										<!--  btn-disabled -->
+										基本信息<button type="submit" data-action="{:url('user/profile/editPost')}"  class="btn js-ajax-submit btn-info btn-sm">保存</button>
+									</div>
+									<div class="info-box">
+										<table>
+											<tr>
+												<th>
+													性别
+												</th>
+												<td>
+													<div class="row" style="margin:0">
+														<div class="custom-control custom-checkbox login-checkbox ml-1 mb-2 col-5">
+															<input type="radio" class="custom-control-input" id="checkbox-sex-male" value="1" name="sex" 
+															 <?php echo $sex == 1? 'checked' : '' ?>
+															 />
+															<label class="custom-control-label" for="checkbox-sex-male">男</label>
+														</div>
+														<div class="custom-control custom-checkbox login-checkbox ml-1 mb-2 col-5">
+															<input type="radio" class="custom-control-input" id="checkbox-sex-female" value="2" name="sex" 
+															<?php echo $sex == 2? 'checked' : '' ?>
+															/>
+															<label class="custom-control-label" for="checkbox-sex-female">女</label>
+														</div>
+													</div>
+												</td>
+											</tr>
+											<tr>
+												<th>
+													手机号码
+												</th>
+												<td>
+													<input type="text" value="13199924610" class="form-control" name="" id="" aria-describedby="helpId" placeholder="" disabled>
+												</td>
+											</tr>
+											<tr>
+												<th>
+													邮箱
+												</th>
+												<td>
+													<input type="text" value="blinkstu@gmail.com" class="form-control" name="" id="" aria-describedby="helpId" placeholder=""
+													 disabled>
+												</td>
+											</tr>
+											<tr>
+												<th>
+													现居地
+												</th>
+												<td>
+													<div class="city-picker-selector " id="city-picker-selector"></div>
+												</td>
+											</tr>
+										</table>
+									</div>
+									<if condition="$role_info.role_id eq 2">
+									<input type="hidden" name="id" value="{$institution.id}" />
+									<div class="datum-title-box">
+										<!--  btn-disabled -->
+										机构信息<button type="submit" data-wait="1500" data-action="{:url('user/check/editProfilePost')}"  class="btn js-ajax-submit btn-info btn-sm">保存</button>
+									</div>
+									<div class="info-box">
+										<table>
+											<tr>
+												<th>
+													真实姓名
+												</th>
+												<td>
+													<input type="text" name="real_name" placeholder="负责人真实姓名" class="form-control" value="{$institution.real_name}" />
+												</td>
+											</tr>
+											<tr>
+												<th>
+													机构名称
+												</th>
+												<td>
+													<input type="text" name="institution_name" placeholder="机构名称" class="form-control" value="{$institution.institution_name}" />
+												</td>
+											</tr>
+											<tr>
+												<th>
+													机构所在地
+												</th>
+												<td>
+													<div class="city-picker-selector" id="city-picker-selector2"></div>
+												</td>
+											</tr>
+											<tr>
+												<th>
+													机构联系电话
+												</th>
+												<td>
+													<input type="text" name="phone_number" placeholder="机构联系电话" class="form-control" value="{$institution.phone_number}" />
+												</td>
+											</tr>
+											<tr>
+												<th>
+													擅长项目
+												</th>
+												<td>
+													<div class="select-wrap" style="margin-top: 40px;">
+														<div class="select">
+															<p style="margin: -45px 0px 15px;">擅长项目</p>
+															<div class="arrow"></div>
+															<foreach name="field" item="vo">
+																<div class="filter active" style="display: inline-block;">
+																	{$vo.name}<input name="field[data][]" value="{$vo.id}" type="hidden" />
+																</div>
+															</foreach>
+														</div>
+														<ul class="filter-wrap" style="display: none;">
+															<foreach name="exceptField" item="vo">
+																<li data-id="{$vo.id}">{$vo.name}</li>
+															</foreach>
+														</ul>
+													</div>
+												</td>
+											</tr>
+											
+										</table>
+									<div class="placeholder">
+
+										</div>
+									</div>
+									</if>
+									</form>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<include file="public@footer" ></include>
+	</div>
+<!-- /container -->
+<include file="public@scripts"></include>
+	<script src="__STATIC__/js/jquery-ui.min.js"></script>
+	<script src="__STATIC__/js/custom.js"></script>
+<script>
+	$(".multi-select").selectify_edit();
+	var selector1 = $("#city-picker-selector").cityPicker({
+		dataJson: cityData,
+		renderMode: true,
+		search: true,
+		selectpattern: [
+			{
+				field: "userProvinceId",
+				placeholder: "选择省份"
+			},
+			{
+				field: "user_city_id",
+				placeholder: "选择城市"
+			},
+			{
+				field: "userDistrictId",
+				placeholder: "选择区县"
+			},
+			{
+				field: "userStreet",
+				placeholder: "选择街道"
+			}
+		],
+		autoSelected: true,
+		keyboard: true,
+		level: 2,
+		onChoiceEnd: function () {
+			console.log(this.values);
+		}
+	});
+	var selector2 = $("#city-picker-selector2").cityPicker({
+		dataJson: cityData,
+		renderMode: true,
+		search: true,
+		autoSelected: true,
+		keyboard: true,
+		level: 2,
+		onChoiceEnd: function () {
+			console.log(this.values);
+		}
+	});
+	var cityID = "{$user_city_id}";
+	var province = cityID.slice(0, 3) + "000";
+
+	selector1.setCityVal(province + "," + cityID);
+
+	var cityID = "{$institution.city_id}";
+	var province = cityID.slice(0, 3) + "000";
+
+	selector2.setCityVal(province + "," + cityID);
+</script>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>专业鉴定 {$site_info.site_name|default=''}</title>
+    <meta name="keywords" content="{$site_info.site_seo_keywords|default=''}" />
+    <meta name="description" content="{$site_info.site_seo_description|default=''}">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/city-picker.css">
+    <include file="public@head" />
+    <link href="__TMPL__/public/assets/css/slippry/slippry.css" rel="stylesheet">
+    <style>
+        .caption-wraper {
+            position: absolute;
+            left: 50%;
+            bottom: 2em;
+        }
+
+        .caption-wraper .caption {
+            position: relative;
+            left: -50%;
+            background-color: rgba(0, 0, 0, 0.54);
+            padding: 0.4em 1em;
+            color: #fff;
+            -webkit-border-radius: 1.2em;
+            -moz-border-radius: 1.2em;
+            -ms-border-radius: 1.2em;
+            -o-border-radius: 1.2em;
+            border-radius: 1.2em;
+        }
+
+        .tc-gridbox {
+            margin: 0;
+        }
+
+        @media (max-width: 767px) {
+            .caption-wraper {
+                left: 0;
+                bottom: 0.4em;
+            }
+
+            .caption-wraper .caption {
+                left: 0;
+                padding: 0.2em 0.4em;
+                font-size: 0.92em;
+                -webkit-border-radius: 0;
+                -moz-border-radius: 0;
+                -ms-border-radius: 0;
+                -o-border-radius: 0;
+                border-radius: 0;
+            }
+        }
+    </style>
+    <hook name="before_head_end" />
+</head>
+
+<body>
+    <include file="public@nav" />
+    <div class="container mt-4">
+        <ul id="home-slider" class="list-unstyled animated fadeIn ">
+            <php>
+                $top_slide_id=empty($theme_vars['top_slide'])?1:$theme_vars['top_slide'];
+            </php>
+            <slides id="$top_slide_id">
+                <li>
+                    <div class="caption-wraper">
+                        <div class="caption">{$vo.title|default=''}</div>
+                    </div>
+                    <a href="{$vo.url|default=''}"><img src="{:cmf_get_image_url($vo.image)}" alt=""></a>
+                </li>
+            </slides>
+            <noslides id="$top_slide_id">
+                <li>
+                    <div class="caption-wraper">
+                        <div class="caption">此幻灯片只是演示,您没有设置任何幻灯片,请到后台模板设置！</div>
+                    </div>
+                    <a href=""><img src="__TMPL__/public/assets/images/demo/1.jpg" alt=""></a>
+                </li>
+                <li>
+                    <div class="caption-wraper">
+                        <div class="caption">此幻灯片只是演示,您没有设置任何幻灯片,请到后台模板设置！</div>
+                    </div>
+                    <a href=""><img src="__TMPL__/public/assets/images/demo/2.jpg" alt=""></a>
+                </li>
+                <li>
+                    <div class="caption-wraper">
+                        <div class="caption">此幻灯片只是演示,您没有设置任何幻灯片,请到后台模板设置！</div>
+                    </div>
+                    <a href=""><img src="__TMPL__/public/assets/images/demo/3.jpg" alt=""></a>
+                </li>
+            </noslides>
+        </ul>
+    </div>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12 col-xl-4">
+                <div class="city-select-card box-shadow">
+                    <div class="top-card">
+                        <div class="select select-location active">按照地区查找</div>
+                        <div class="select select-field">按照领域查找</div>
+                    </div>
+                    <div class="card-body location">
+                        <div class="city-picker-selector" id="city-picker-selector"></div>
+                        <button type="button" name="" id="" class="btn btn-outline-primary mx-auto" btn-lg style="width: 90%;">搜索</button>
+                    </div>
+                    <div class="card-body field" style="display:none;">
+                        <div>123123</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-xl-8">
+                <ul class="block-list grid-list">
+                    <?php for($x=1;$x<=8;$x++){ ?>
+                    <li>
+                        <a href="/" class="card-1 animated bounceIn ">
+                            <img class="card-pics" data-src="holder.js/120x120?theme=social&text=测试头像">
+                            <div class="box-right">
+                                <div class="text">
+                                    <div class="mdl-card__title">
+                                        <span class="mdl-card__title-text heiti-std">陈小勤</span>
+                                        <span class="post">专职律师</span>
+                                    </div>
+                                    <div class="mobile">
+                                        13199924610
+                                    </div>
+                                    <div class="mdl-card__actions mdl-card--border">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <?php } ?>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <include file="public@footer" />
+    <!-- /container -->
+    <include file="public@scripts" />
+    <script src="__TMPL__/public/assets/js/slippry.min.js"></script>
+    <script type="text/javascript" src="__TMPL__/public/assets/js/citydata.js"></script>
+    <script type="text/javascript" src="__TMPL__/public/assets/js/city-picker.js"></script>
+    <script>
+        $(function () {
+            var selector3 = $('#city-picker-selector').cityPicker({
+                dataJson: cityData,
+                renderMode: true,
+                search: true,
+                autoSelected: true,
+                keyboard: true,
+                level: 2,
+                onChoiceEnd: function () {
+                    console.log(this.values)
+                }
+            });
+            var height = $('.card-1').height();
+            var width = $('.card-1').width();
+
+            $('.box-right').height(height - width);
+            $('.box-right .text').height(height - width);
+
+            $('.select-location').on('click', function () {
+                $('.active').removeClass('active');
+                $(this).addClass('active');
+                $('.card-body.location').show();
+                $('.card-body.field').hide();
+            })
+
+            $('.select-field').on('click', function () {
+                $('.active').removeClass('active');
+                $(this).addClass('active');
+                $('.card-body.field').show();
+                $('.card-body.location').hide();
+            })
+
+
+            $("#home-slider").slippry({
+                transition: 'fade',
+                useCSS: true,
+                captions: false,
+                speed: 1000,
+                pause: 3000,
+                auto: true,
+                preload: 'visible'
+            });
+            $("#home-slider").show();
+        });
+    </script>
+    <hook name="before_body_end" />
+</body>
+
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{$user_info.user_login} - 我的鉴定订单</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <include file="public@head"></include>
+    <style>
+      .control-label {
+        float: left;
+        width: 70px;
+      }
+      .city-picker-selector .selector-item {
+        width: calc(50% - 10px);
+        margin: 0;
+        margin-left: 20px;
+        float: left;
+      }
+      .city-picker-selector .selector-item:first-child {
+        margin-left: 0px;
+      }
+    </style>
+  </head>
+
+  <body id="top">
+    <include file="public@nav"></include>
+    <div class="container tc-main">
+      <div class="row py-2">
+        <div class="col-md-6">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <i class="fa fa-dot-circle-o" aria-hidden="true"></i>
+
+              &nbsp;&nbsp;当前位置：
+
+              <li class="breadcrumb-item"><a href="/">首页</a></li>
+
+              <li class="breadcrumb-item active">我的鉴定订单</li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+      <div class="row  profile box-shadow">
+        <div class="col-md-2 profile-left">
+          <include file="public@usernav"></include>
+        </div>
+        <div class="col-md-10">
+          <div class="tabs profile-right">
+            <div class="tab-content">
+              <div class="tab-pane my-order active" id="one">
+                <h4 class="heiti-std my-order-title">我的订单</h4>
+                <div class="order-panel">
+                  <div class="panel-left">
+                    <a href="javascript:;">全部订单</a>
+                    <a href="javascript:;">待支付</a>
+                    <a href="javascript:;">已支付</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <include file="public@footer"></include>
+    </div>
+    <!-- /container -->
+    <include file="public@scripts"></include>
+    <script src="__STATIC__/js/jquery-ui.min.js"></script>
+    <script src="__STATIC__/js/custom.js"></script>
+    <script></script>
+  </body>
+</html>

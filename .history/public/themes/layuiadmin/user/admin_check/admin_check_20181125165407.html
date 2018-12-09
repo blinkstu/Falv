@@ -1,0 +1,35 @@
+<include file="public@header"></include>
+<hook name="admin_before_head_end" />
+</head>
+
+<body style='background: #f2f2f2'>
+    <div class="layui-fluid">
+        <div class="layui-card">
+            <div class="layui-card-header">
+                领域设定&nbsp;&nbsp;&nbsp;&nbsp;<div class="layui-btn layui-btn-xs
+                    add_field">添加</div>
+            </div>
+            <div class="layui-card-body">
+                <div style="width: 500px;">
+                    <table id="demo" lay-filter="test"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+    <script src="__TMPL__/public/assets/layui/layui.js"></script>
+
+    <hook name="admin_before_body_end" />
+</body>
+
+<script>
+    layui.config({
+        base: '__TMPL__/public/assets/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'layer', 'table'], function () {
+        
+    });
+</script>
+
+</html>

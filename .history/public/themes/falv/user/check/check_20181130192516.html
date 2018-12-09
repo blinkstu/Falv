@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>资质鉴定</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <include file="public@head"></include>
+    <style>
+      .control-label {
+        float: left;
+        width: 70px;
+      }
+      .city-picker-selector .selector-item {
+        width: calc(50% - 10px);
+        margin: 0;
+        margin-left: 20px;
+        float: left;
+      }
+      .city-picker-selector .selector-item:first-child {
+        margin-left: 0px;
+      }
+    </style>
+  </head>
+
+  <body id="top">
+    <include file="public@nav"></include>
+    <div class="container tc-main">
+      <div class="row py-2">
+        <div class="col-md-6">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <i class="fa fa-dot-circle-o" aria-hidden="true"></i>
+
+              &nbsp;&nbsp;当前位置：
+
+              <li class="breadcrumb-item"><a href="/">首页</a></li>
+
+              <li class="breadcrumb-item active">资质鉴定</li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+      <div class="row  profile box-shadow">
+        <div class="col-md-2 profile-left">
+          <include file="public@usernav"></include>
+        </div>
+        <div class="col-md-10">
+          <div class="tabs profile-right">
+            <div class="tab-content check-institution">
+              <div class="tab-pane active" id="one">
+                <if condition="$user_info.user_status != 100">
+                  <div class="alert alert-{$class}" role="alert">{$msg}</div>
+                </if>
+                <form class="js-ajax-form" method="post">
+                  <table class="table">
+                    <tr>
+                      <th>公司营业执照:</th>
+                      <td>
+                        <div class="upload-pic">
+                          <input
+                            id="photo-1"
+                            type="hidden"
+                            name="photo_url_1"
+                          />
+                          <a
+                            href="javascript:uploadOneImage('图片上传','#photo-1');"
+                          >
+                            <img
+                              src="__STATIC__/images/upload.png"
+                              id="photo-1-preview"
+                              alt=""
+                            />
+                          </a>
+                        </div>
+                      </td>
+                      <td>示例文件:</td>
+                    </tr>
+                    <tr>
+                      <th>经营许可证:</th>
+                      <td>
+                        <div class="upload-pic">
+                          <input
+                            id="photo-2"
+                            type="hidden"
+                            name="photo_url_2"
+                          />
+                          <a
+                            href="javascript:uploadOneImage('图片上传','#photo-2');"
+                          >
+                            <if condition="$qualify_pics != ''">
+                              <img
+                                src="__STATIC__/images/upload.png"
+                                id="photo-2-preview"
+                                alt=""
+                              />
+                            </if>
+                          </a>
+                        </div>
+                      </td>
+                      <td>示例文件:</td>
+                    </tr>
+                    <tr>
+                      <th></th>
+                      <td></td>
+                      <td>
+                        <button
+                          type="submit"
+                          name=""
+                          id=""
+                          class="btn js-ajax-submit btn-primary pull-right"
+                          btn-lg
+                          btn-block
+                          data-action="{:url('/user/check/userCheckPost')}"
+                        >
+                          提交审核
+                        </button>
+                      </td>
+                    </tr>
+                  </table>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <include file="public@footer"></include>
+    </div>
+    <!-- /container -->
+    <include file="public@scripts"></include>
+    <script src="__STATIC__/js/jquery-ui.min.js"></script>
+    <script src="__STATIC__/js/custom.js"></script>
+    <script>
+      $(".multi-select").selectify_edit();
+      var selector3 = $("#city-picker-selector").cityPicker({
+        dataJson: cityData,
+        renderMode: true,
+        search: true,
+        autoSelected: true,
+        keyboard: true,
+        level: 2,
+        onChoiceEnd: function() {
+          console.log(this.values);
+        }
+      });
+
+      var cityID = "{$institution.city_id}";
+      var province = cityID.slice(0, 3) + "000";
+
+      selector3.setCityVal(province + "," + cityID);
+    </script>
+  </body>
+</html>

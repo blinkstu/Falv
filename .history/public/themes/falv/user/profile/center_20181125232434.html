@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{$user_login} - 个人中心</title>
+<meta name="keywords" content=""/>
+<meta name="description" content="">
+<include file="public@head" ></include>
+<style>
+.control-label {
+	font-weight: bold;
+	float: left;
+	width: 70px;
+}
+</style>
+</head>
+<body id="top">
+<include file="public@nav" ></include>
+	<div class="container tc-main">
+		<div class="row py-2">
+			<div class="col-md-6">
+				<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					<i class="fa fa-dot-circle-o" aria-hidden="true"></i>
+		
+					&nbsp;&nbsp;当前位置：
+		
+					<li class="breadcrumb-item">
+					<a href="/">首页</a>
+					</li>
+		
+					<li class="breadcrumb-item active">个人中心</li>
+				</ol>
+				</nav>
+			</div>
+		</div>
+		<div class="row  profile box-shadow">
+			<div class="col-md-2 profile-left">
+				<include file="public@usernav" ></include>
+			</div>
+			<div class="col-md-10">
+				<div class="tabs profile-right">
+					<div class="tab-content">
+						<div class="tab-pane active" id="one">
+							<br>
+							<div class="row justify-content-md-center">
+								<div class="col-md-4 text-center">
+								
+								<div class="avatar">
+									<a href="{:url('profile/avatar')}"></a>
+									<if condition="empty($avatar)">
+										<img src="__TMPL__/public/assets/images/headicon_128.png" class="headicon" width="128" />
+										<else />
+										<img src="__ROOT__/upload/{$avatar}" class="headicon" width="128" />
+									</if>
+									</a>
+								</div>
+
+								<div class="avatar-text">{$user_login|default='未填写'}</div>
+								</div>
+							</div>
+							<div class="row justify-content-md-center personal-info-right">
+								<div class="col-md-12">
+									<div class="datum-title-box">
+										<!--  btn-disabled -->
+										基本信息<a href="{:url('user/profile/edit')}" class="btn btn-primary">保存</a>
+									</div>
+									<div class="form-group">
+										<label class="control-label" for="input-user_nicename">昵称</label>
+										<div>{$user_nickname|default='未填写'}</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label" for="input-sex">性别</label>
+										<div>
+											<php> $sexs=array("0"=>"保密","1"=>"程序猿","2"=>"程序媛");echo $sexs[$sex]; </php>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label" for="input-birthday">生日</label>
+										<div>{:date('Y-m-d',$birthday)}</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label" for="input-user_url">个人网址</label>
+										<div>{$user_url|default='未填写'}</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label" for="input-signature">个性签名</label>
+										<div>{$signature|default='未填写'}</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<include file="public@footer" ></include>
+	</div>
+<!-- /container -->
+<include file="public@scripts"></include>
+</body>
+</html>

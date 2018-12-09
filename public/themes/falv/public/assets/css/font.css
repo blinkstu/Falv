@@ -1,0 +1,14 @@
+/* font */
+@font-face {
+  font-family: "HeitiStd";
+  src: url("fonts/adobeHeitiStd-Regular.eot?#iefix") format("embedded-opentype"),
+    url("fonts/adobeHeitiStd-Regular.woff") format("woff"),
+    url("fonts/adobeHeitiStd-Regular.ttf") format("truetype"),
+    url("fonts/adobeHeitiStd-Regular.svg") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+.heiti-std {
+  font-family: "Microsoft YaHei";
+  font-family: "HeitiStd";
+}

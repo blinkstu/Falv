@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>添加地址-{$site_info.site_name|default=''}</title>
+    <meta name="keywords" content="{$site_info.site_seo_keywords|default=''}" />
+    <meta name="description" content="{$site_info.site_seo_description|default=''}">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/city-picker.css">
+    <include file="public@head" />
+    <link href="__TMPL__/public/assets/css/slippry/slippry.css" rel="stylesheet">
+    <hook name="before_head_end" />
+</head>
+
+<body>
+    <div class="container mt-4">
+
+    </div>
+    </div>
+    <include file="public@footer" />
+    <!-- /container -->
+    <script src="__STATIC__/js/jquery-ui.min.js"></script>
+    <include file="public@scripts" />
+    <script src="__STATIC__/js/custom.js"></script>
+    <script>
+        var step1 = $('.step-1');
+        var step2 = $('.step-2');
+        var step3 = $('.step-3');
+        var next1 = $('.next', step1)
+        var next2 = $('.next', step2)
+        var previous2 = $('.previous', step2)
+        var previous3 = $('.previous', step3);
+
+        function strlen(str) {
+            var len = 0;
+            for (var i = 0; i < str.length; i++) {
+                var c = str.charCodeAt(i);
+                //单字节加1 
+                if ((c >= 0x0001 && c <= 0x007e) || (0xff60 <= c && c <= 0xff9f)) {
+                    len++;
+                }
+                else {
+                    len += 2;
+                }
+            }
+            return len;
+        }
+
+        next1.on('click', function () {
+            text = $('#exampleFormControlTextarea1').val();
+            if (text == '') {
+                layer.msg('请详细描述您要鉴定的项目')
+                return false;
+            }
+            if (strlen(text) <= 60) {
+                layer.msg('描述内容需至少30字');
+                return false;
+            }
+            step1.removeClass('active');
+            step2.addClass('active');
+            progressController(2);
+        });
+        next2.on('click', function () {
+            step2.removeClass('active');
+            step3.addClass('active');
+            progressController(3);
+        });
+        previous2.on('click', function () {
+            step2.removeClass('active');
+            step1.addClass('active');
+            progressController(1);
+        });
+        previous3.on('click', function () {
+            step3.removeClass('active');
+            step2.addClass('active');
+            progressController(2);
+        })
+
+        function progressController(index) {
+            $('.bs-wizard-step').removeClass('active complete');
+            var currentStep = $('.pro-' + index)
+            var max = 4;
+            currentStep.removeClass('disabled active complete');
+            currentStep.addClass('active');
+            for (x = 1; x < index; x++) {
+                var previousStep = $('.pro-' + x);
+                previousStep.removeClass('disabled complete');
+                previousStep.addClass('complete');
+            }
+
+            for (x = 4; x > index; x--) {
+                console.log('x' + x)
+                var nextStep = $('.pro-' + x);
+                nextStep.removeClass('active complete');
+                nextStep.addClass('disabled');
+                //previousStep.addClass('disabled');
+            }
+        }
+        $(".multi-select").selectify();
+        var selector3 = $("#city-picker-selector").cityPicker({
+            dataJson: cityData,
+            renderMode: true,
+            search: true,
+            autoSelected: true,
+            keyboard: true,
+            level: 2,
+            onChoiceEnd: function () {
+                console.log(this.values);
+            }
+        });
+
+    </script>
+    <script src="__TMPL__/public/assets/js/slippry.min.js"></script>
+    <script type="text/javascript" src="__TMPL__/public/assets/js/citydata.js"></script>
+    <script type="text/javascript" src="__TMPL__/public/assets/js/city-picker.js"></script>
+    <hook name="before_body_end" />
+</body>
+
+</html>
